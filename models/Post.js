@@ -18,14 +18,11 @@ const postSchema = new Schema(
     description: String,
     picturePath: {
       type: String,
-      lowercase: true,
       default: "",
-      set: (value) => value.split(" ").join("-"),
     },
     userPicturePath: {
       type: String,
-      lowercase: true,
-      set: (value) => value.split(" ").join("-"),
+      default: "",
     },
     likes: {
       type: Array,

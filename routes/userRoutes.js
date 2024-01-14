@@ -16,8 +16,8 @@ router.get("/search/:searchTerm", searchUsers);
 
 //uPDATE
 
-router.patch("/:userId/:friendId", addRemoveFriend);
-router.put("/:id/updateTwitter", updateTwitter);
-router.put("/:id/updateInstagram", updateInstagram);
+router.patch("/:userId/:friendId", verifyToken, addRemoveFriend);
+router.put("/:id/updateTwitter", verifyToken, updateTwitter);
+router.put("/:id/updateInstagram", verifyToken, updateInstagram);
 
 module.exports = router;

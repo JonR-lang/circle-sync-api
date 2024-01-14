@@ -5,9 +5,13 @@ const {
   likePost,
   commentPost,
   deletePost,
+  createPost,
 } = require("../controllers/postController");
 const { verifyToken } = require("../middleware/auth");
 const router = Router();
+
+//CREATE
+router.post("/", verifyToken, createPost);
 
 //READ
 
@@ -21,6 +25,6 @@ router.patch("/:postId/comment", verifyToken, commentPost);
 
 //DELETE
 
-router.delete("/:id/deletePost", deletePost);
+router.delete("/:id/deletePost", verifyToken, deletePost);
 
 module.exports = router;

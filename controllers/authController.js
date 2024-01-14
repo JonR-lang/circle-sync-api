@@ -10,9 +10,8 @@ module.exports.register = async (req, res) => {
       email,
       password,
       picturePath,
-      friends,
       location,
-      occupation,
+      personalInterests,
     } = req.body;
 
     const salt = await bcrypt.genSalt();
@@ -24,7 +23,7 @@ module.exports.register = async (req, res) => {
       email,
       password: hashedPassword,
       picturePath,
-      friends,
+      friends: [],
       location,
       personalInterests,
       socials: {
@@ -74,10 +73,12 @@ module.exports.login = async (req, res) => {
     res.cookie("accessToken", accessToken, {
       maxAge: 15 * 60 * 1000,
       httpOnly: true,
+      sameSite: "none",
     });
-    await res.cookie("refreshToken", refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       maxAge: 89900000000,
       httpOnly: true,
+      sameSite: "none",
     });
 
     res.status(200).json({ user });
@@ -111,6 +112,7 @@ module.exports.refreshToken = (req, res) => {
       res.cookie("accessToken", accessToken, {
         maxAge: 15 * 60 * 1000,
         httpOnly: true,
+        sameSite: "none",
       });
 
       res.status(200).json({ accessToken });

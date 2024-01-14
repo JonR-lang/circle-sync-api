@@ -31,9 +31,7 @@ const userSchema = new Schema(
     },
     picturePath: {
       type: String,
-      lowercase: true,
       default: "",
-      set: (value) => value.split(" ").join("-"),
     },
     friends: [String],
     socials: {

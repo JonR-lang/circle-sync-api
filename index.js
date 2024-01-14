@@ -1,19 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
-const path = require("path");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
-const multer = require("multer");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const { register } = require("./controllers/authController");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes.js");
-const { verifyToken } = require("./middleware/auth.js");
-const { createPost } = require("./controllers/postController");
 
 dotenv.config();
 
@@ -26,33 +21,18 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(morgan("common"));
 
+const allowedOrigins = process.env.DOMAIN.split(",");
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
 app.use(cookieParser());
-
-app.use(express.static(path.join(__dirname, "public/assets")));
-
-//FILE STORAGE
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    return cb(null, "./public/assets");
-  },
-  filename: function (req, file, cb) {
-    return cb(null, file.originalname.split(" ").join("-").toLowerCase());
-  },
+app.get("/", (req, res) => {
+  res.send("API is up and running!");
 });
-
-const upload = multer({ storage: storage });
-
-//ROUTES WITH FILES: The below was not put into the authRoute folder because of the middleware for file upload that was passed into it.
-
-app.post("/auth/register", upload.any(), register);
-app.post("/posts", upload.any(), verifyToken, createPost);
 
 //ROUTES
 
