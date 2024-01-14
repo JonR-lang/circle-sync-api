@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(morgan("common"));
 
 const allowedOrigins = process.env.DOMAIN.split(",");
+console.log(allowedOrigins)
 
 app.use(
   cors({
